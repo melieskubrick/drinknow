@@ -1,5 +1,5 @@
 //
-//  CategoriasTableViewCell.swift
+//  ViewController.swift
 //  DrinkNow
 //
 //  Created by Melies Kubrick on 19/09/19.
@@ -8,8 +8,7 @@
 
 import UIKit
 
-class CategoriasTableViewCell: UITableViewCell {
+class ViewController: UIViewController {
 
-    @IBOutlet weak var nomeCategoria: UILabel!
     
 }

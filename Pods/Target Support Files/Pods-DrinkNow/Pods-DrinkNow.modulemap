@@ -1,0 +1,6 @@
+framework module Pods_DrinkNow {
+  umbrella header "Pods-DrinkNow-umbrella.h"
+
+  export *
+  module * { export * }
+}
