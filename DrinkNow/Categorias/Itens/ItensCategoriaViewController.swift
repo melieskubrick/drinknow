@@ -39,7 +39,7 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
         //  Configurações do JSON
         let nomeCategoriaSelecionadaFormatado = nomeCategoriaSelecionada.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
         let urlCategoriasJson = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=\(nomeCategoriaSelecionadaFormatado)"
-        print("Kubrick \(urlCategoriasJson)")
+        
         let json = "{\"\":\"\"}"
         let url = URL(string: urlCategoriasJson)!
         let jsonData = json.data(using: .utf8, allowLossyConversion: false)!
@@ -52,6 +52,8 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
         Alamofire.request(request).responseJSON {
             (response) in
             DispatchQueue.main.async {
+                
+                self.title = self.nomeCategoriaSelecionada
                 
                 if self.nomeCategoriaSelecionada.isEmpty == false {
                     let categoriesJSON: JSON = JSON(response.result.value!)

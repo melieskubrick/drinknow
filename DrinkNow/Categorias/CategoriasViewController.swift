@@ -10,16 +10,19 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
-class CategoriasViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CategoriasViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     //  OUTLETS
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBarCategorias: UISearchBar!
     
     //  VARIÁVEIS
     let data = NSMutableData()
     let urlCategoriasJson = "https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list"
     let json = "{\"\":\"\"}"
     var categoriaArray = [String]()
+    var categoriasFiltradas:[String] = []
+    var searchActive : Bool = false
     let itemName = "myJSONFromWeb"
     let defaults = UserDefaults.standard
     
@@ -57,11 +60,15 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     //  Primeira atividade que é executada
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchBarCategorias.delegate = self
         lerJson()
     }
     
     //  Especificações da tabela
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if(searchActive) {
+            return categoriasFiltradas.count
+        }
         return categoriaArray.count
     }
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -76,7 +83,12 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         
         if let categoriaDrink: Array = DataCache.sharedInstance.cache["catArray"] as? Array<Any> {
             let nomeCategoria = categoriaDrink[indexPath.row]
-            cell.nomeCategoria.text = nomeCategoria as? String
+            
+            if(searchActive){
+                cell.nomeCategoria.text = categoriasFiltradas[indexPath.row]
+            } else {
+                cell.nomeCategoria.text = nomeCategoria as? String
+            }
         }
         
         return cell
@@ -89,11 +101,45 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         
         if let vcDetail : ItensCategoriaViewController = self.storyboard?.instantiateViewController(withIdentifier: "DetailCategorias") as? ItensCategoriaViewController {
             
-            vcDetail.nomeCategoriaSelecionada = categoriaArray[indexPath.row]
-            
+            if(searchActive){
+                vcDetail.nomeCategoriaSelecionada = categoriasFiltradas[indexPath.row]
+            } else {
+                vcDetail.nomeCategoriaSelecionada = categoriaArray[indexPath.row]
+            }
             self.show(vcDetail, sender: nil)
-//            self.present(vcDetail, animated: true, completion: nil)
         }
+    }
+    
+    //  Configurações da Search Bar
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchActive = true
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        categoriasFiltradas = categoriaArray.filter({ (text) -> Bool in
+            let tmp: NSString = text as NSString
+            let range = tmp.range(of: searchText, options: .caseInsensitive)
+            return range.location != NSNotFound
+        })
+        
+        if(categoriasFiltradas.count == 0){
+            searchActive = false;
+        } else {
+            searchActive = true;
+        }
+        self.tableView.reloadData()
     }
     
 }
