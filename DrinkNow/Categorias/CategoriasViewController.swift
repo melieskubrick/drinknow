@@ -20,6 +20,8 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     let urlCategoriasJson = "https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list"
     let json = "{\"\":\"\"}"
     var categoriaArray = [String]()
+    let itemName = "myJSONFromWeb"
+    let defaults = UserDefaults.standard
     
     //  FUNÇÕES
     
@@ -42,6 +44,10 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
                     let nome = item["strCategory"].stringValue
                     print("Nome da categoria \(nome)")
                     self.categoriaArray.append(nome)
+                    
+                    DataCache.sharedInstance.cache["catArray"] = self.categoriaArray
+                    
+                    
                     self.tableView.reloadData()
                 }
             }
@@ -68,7 +74,26 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         // Colocando o nome dos drinks em cada linha
         cell.nomeCategoria.text = categoriaArray[indexPath.row]
         
+        if let categoriaDrink: Array = DataCache.sharedInstance.cache["catArray"] as? Array<Any> {
+            let nomeCategoria = categoriaDrink[indexPath.row]
+            cell.nomeCategoria.text = nomeCategoria as? String
+        }
+        
         return cell
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if let vcDetail : ItensCategoriaViewController = self.storyboard?.instantiateViewController(withIdentifier: "DetailCategorias") as? ItensCategoriaViewController {
+            
+            vcDetail.nomeCategoriaSelecionada = categoriaArray[indexPath.row]
+            
+            self.show(vcDetail, sender: nil)
+//            self.present(vcDetail, animated: true, completion: nil)
+        }
     }
     
 }

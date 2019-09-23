@@ -8,6 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		928E2E8623C73E28FF69B30C /* Pods_DrinkNow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15478A58EC2DB48CA85746D9 /* Pods_DrinkNow.framework */; };
+		FA0A5D3B2338650A00A606EB /* ItemDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A5D3A2338650A00A606EB /* ItemDetailViewController.swift */; };
+		FA1618E8233965CE00A2CFC8 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618D6233965CC00A2CFC8 /* SF-Pro-Text-Regular.otf */; };
+		FA1618E9233965CE00A2CFC8 /* SF-Pro-Text-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618D7233965CD00A2CFC8 /* SF-Pro-Text-Black.otf */; };
+		FA1618EA233965CE00A2CFC8 /* SF-Pro-Text-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618D8233965CD00A2CFC8 /* SF-Pro-Text-Light.otf */; };
+		FA1618EB233965CE00A2CFC8 /* SF-Pro-Text-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618D9233965CD00A2CFC8 /* SF-Pro-Text-MediumItalic.otf */; };
+		FA1618EC233965CE00A2CFC8 /* SF-Pro-Text-UltralightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618DA233965CD00A2CFC8 /* SF-Pro-Text-UltralightItalic.otf */; };
+		FA1618ED233965CE00A2CFC8 /* SF-Pro-Text-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618DB233965CD00A2CFC8 /* SF-Pro-Text-Thin.otf */; };
+		FA1618EE233965CE00A2CFC8 /* SF-Pro-Text-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618DC233965CD00A2CFC8 /* SF-Pro-Text-Medium.otf */; };
+		FA1618EF233965CE00A2CFC8 /* SF-Pro-Text-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618DD233965CD00A2CFC8 /* SF-Pro-Text-BlackItalic.otf */; };
+		FA1618F0233965CE00A2CFC8 /* SF-Pro-Text-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618DE233965CD00A2CFC8 /* SF-Pro-Text-LightItalic.otf */; };
+		FA1618F1233965CE00A2CFC8 /* SF-Pro-Text-HeavyItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618DF233965CD00A2CFC8 /* SF-Pro-Text-HeavyItalic.otf */; };
+		FA1618F2233965CE00A2CFC8 /* SF-Pro-Text-Ultralight.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618E0233965CD00A2CFC8 /* SF-Pro-Text-Ultralight.otf */; };
+		FA1618F3233965CE00A2CFC8 /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618E1233965CD00A2CFC8 /* SF-Pro-Text-Semibold.otf */; };
+		FA1618F4233965CE00A2CFC8 /* SF-Pro-Text-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618E2233965CE00A2CFC8 /* SF-Pro-Text-Heavy.otf */; };
+		FA1618F5233965CE00A2CFC8 /* SF-Pro-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618E3233965CE00A2CFC8 /* SF-Pro-Text-Bold.otf */; };
+		FA1618F6233965CE00A2CFC8 /* SF-Pro-Text-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618E4233965CE00A2CFC8 /* SF-Pro-Text-BoldItalic.otf */; };
+		FA1618F7233965CE00A2CFC8 /* SF-Pro-Text-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618E5233965CE00A2CFC8 /* SF-Pro-Text-ThinItalic.otf */; };
+		FA1618F8233965CE00A2CFC8 /* SF-Pro-Text-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618E6233965CE00A2CFC8 /* SF-Pro-Text-RegularItalic.otf */; };
+		FA1618F9233965CE00A2CFC8 /* SF-Pro-Text-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618E7233965CE00A2CFC8 /* SF-Pro-Text-SemiboldItalic.otf */; };
 		FA8153532333CFA6007954A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8153522333CFA6007954A2 /* AppDelegate.swift */; };
 		FA8153552333CFA6007954A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8153542333CFA6007954A2 /* ViewController.swift */; };
 		FA8153582333CFA6007954A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA8153562333CFA6007954A2 /* Main.storyboard */; };
@@ -42,6 +61,26 @@
 		15478A58EC2DB48CA85746D9 /* Pods_DrinkNow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DrinkNow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		82AD2C5E6B00160E95D6019E /* Pods-DrinkNow.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DrinkNow.debug.xcconfig"; path = "Target Support Files/Pods-DrinkNow/Pods-DrinkNow.debug.xcconfig"; sourceTree = "<group>"; };
 		CF1D17E90B8643D7C757A637 /* Pods-DrinkNow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DrinkNow.release.xcconfig"; path = "Target Support Files/Pods-DrinkNow/Pods-DrinkNow.release.xcconfig"; sourceTree = "<group>"; };
+		FA0A5D3A2338650A00A606EB /* ItemDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailViewController.swift; sourceTree = "<group>"; };
+		FA1618D6233965CC00A2CFC8 /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
+		FA1618D7233965CD00A2CFC8 /* SF-Pro-Text-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Black.otf"; sourceTree = "<group>"; };
+		FA1618D8233965CD00A2CFC8 /* SF-Pro-Text-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Light.otf"; sourceTree = "<group>"; };
+		FA1618D9233965CD00A2CFC8 /* SF-Pro-Text-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-MediumItalic.otf"; sourceTree = "<group>"; };
+		FA1618DA233965CD00A2CFC8 /* SF-Pro-Text-UltralightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-UltralightItalic.otf"; sourceTree = "<group>"; };
+		FA1618DB233965CD00A2CFC8 /* SF-Pro-Text-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Thin.otf"; sourceTree = "<group>"; };
+		FA1618DC233965CD00A2CFC8 /* SF-Pro-Text-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Medium.otf"; sourceTree = "<group>"; };
+		FA1618DD233965CD00A2CFC8 /* SF-Pro-Text-BlackItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-BlackItalic.otf"; sourceTree = "<group>"; };
+		FA1618DE233965CD00A2CFC8 /* SF-Pro-Text-LightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-LightItalic.otf"; sourceTree = "<group>"; };
+		FA1618DF233965CD00A2CFC8 /* SF-Pro-Text-HeavyItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-HeavyItalic.otf"; sourceTree = "<group>"; };
+		FA1618E0233965CD00A2CFC8 /* SF-Pro-Text-Ultralight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Ultralight.otf"; sourceTree = "<group>"; };
+		FA1618E1233965CD00A2CFC8 /* SF-Pro-Text-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Semibold.otf"; sourceTree = "<group>"; };
+		FA1618E2233965CE00A2CFC8 /* SF-Pro-Text-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Heavy.otf"; sourceTree = "<group>"; };
+		FA1618E3233965CE00A2CFC8 /* SF-Pro-Text-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Bold.otf"; sourceTree = "<group>"; };
+		FA1618E4233965CE00A2CFC8 /* SF-Pro-Text-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-BoldItalic.otf"; sourceTree = "<group>"; };
+		FA1618E5233965CE00A2CFC8 /* SF-Pro-Text-ThinItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-ThinItalic.otf"; sourceTree = "<group>"; };
+		FA1618E6233965CE00A2CFC8 /* SF-Pro-Text-RegularItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-RegularItalic.otf"; sourceTree = "<group>"; };
+		FA1618E7233965CE00A2CFC8 /* SF-Pro-Text-SemiboldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-SemiboldItalic.otf"; sourceTree = "<group>"; };
+		FA1618FB23396C5B00A2CFC8 /* AwesomeCache.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AwesomeCache.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA81534F2333CFA6007954A2 /* DrinkNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA8153522333CFA6007954A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA8153542333CFA6007954A2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -93,16 +132,57 @@
 				82AD2C5E6B00160E95D6019E /* Pods-DrinkNow.debug.xcconfig */,
 				CF1D17E90B8643D7C757A637 /* Pods-DrinkNow.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
 		51908BFC14DD433F0D236330 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA1618FB23396C5B00A2CFC8 /* AwesomeCache.framework */,
 				15478A58EC2DB48CA85746D9 /* Pods_DrinkNow.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FA1618D4233965B600A2CFC8 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				FA1618D5233965BE00A2CFC8 /* Fonts */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		FA1618D5233965BE00A2CFC8 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				FA1618FA233965D200A2CFC8 /* SF */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		FA1618FA233965D200A2CFC8 /* SF */ = {
+			isa = PBXGroup;
+			children = (
+				FA1618D7233965CD00A2CFC8 /* SF-Pro-Text-Black.otf */,
+				FA1618DD233965CD00A2CFC8 /* SF-Pro-Text-BlackItalic.otf */,
+				FA1618E3233965CE00A2CFC8 /* SF-Pro-Text-Bold.otf */,
+				FA1618E4233965CE00A2CFC8 /* SF-Pro-Text-BoldItalic.otf */,
+				FA1618E2233965CE00A2CFC8 /* SF-Pro-Text-Heavy.otf */,
+				FA1618DF233965CD00A2CFC8 /* SF-Pro-Text-HeavyItalic.otf */,
+				FA1618D8233965CD00A2CFC8 /* SF-Pro-Text-Light.otf */,
+				FA1618DE233965CD00A2CFC8 /* SF-Pro-Text-LightItalic.otf */,
+				FA1618DC233965CD00A2CFC8 /* SF-Pro-Text-Medium.otf */,
+				FA1618D9233965CD00A2CFC8 /* SF-Pro-Text-MediumItalic.otf */,
+				FA1618D6233965CC00A2CFC8 /* SF-Pro-Text-Regular.otf */,
+				FA1618E6233965CE00A2CFC8 /* SF-Pro-Text-RegularItalic.otf */,
+				FA1618E1233965CD00A2CFC8 /* SF-Pro-Text-Semibold.otf */,
+				FA1618E7233965CE00A2CFC8 /* SF-Pro-Text-SemiboldItalic.otf */,
+				FA1618DB233965CD00A2CFC8 /* SF-Pro-Text-Thin.otf */,
+				FA1618E5233965CE00A2CFC8 /* SF-Pro-Text-ThinItalic.otf */,
+				FA1618E0233965CD00A2CFC8 /* SF-Pro-Text-Ultralight.otf */,
+				FA1618DA233965CD00A2CFC8 /* SF-Pro-Text-UltralightItalic.otf */,
+			);
+			path = SF;
 			sourceTree = "<group>";
 		};
 		FA8153462333CFA5007954A2 = {
@@ -130,6 +210,7 @@
 		FA8153512333CFA6007954A2 /* DrinkNow */ = {
 			isa = PBXGroup;
 			children = (
+				FA1618D4233965B600A2CFC8 /* Assets */,
 				FA8153802333D2E7007954A2 /* Categorias */,
 				FA8153522333CFA6007954A2 /* AppDelegate.swift */,
 				FA8153542333CFA6007954A2 /* ViewController.swift */,
@@ -174,6 +255,7 @@
 			children = (
 				FA8153862333F94C007954A2 /* ItensCategoriaViewController.swift */,
 				FA8153882333F961007954A2 /* ItensCategoriaTableViewCell.swift */,
+				FA0A5D3A2338650A00A606EB /* ItemDetailViewController.swift */,
 			);
 			path = Itens;
 			sourceTree = "<group>";
@@ -285,8 +367,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA81535D2333CFA7007954A2 /* LaunchScreen.storyboard in Resources */,
+				FA1618EB233965CE00A2CFC8 /* SF-Pro-Text-MediumItalic.otf in Resources */,
+				FA1618F8233965CE00A2CFC8 /* SF-Pro-Text-RegularItalic.otf in Resources */,
 				FA81535A2333CFA7007954A2 /* Assets.xcassets in Resources */,
+				FA1618F9233965CE00A2CFC8 /* SF-Pro-Text-SemiboldItalic.otf in Resources */,
+				FA1618EA233965CE00A2CFC8 /* SF-Pro-Text-Light.otf in Resources */,
+				FA1618E8233965CE00A2CFC8 /* SF-Pro-Text-Regular.otf in Resources */,
+				FA1618F2233965CE00A2CFC8 /* SF-Pro-Text-Ultralight.otf in Resources */,
 				FA8153582333CFA6007954A2 /* Main.storyboard in Resources */,
+				FA1618EC233965CE00A2CFC8 /* SF-Pro-Text-UltralightItalic.otf in Resources */,
+				FA1618F1233965CE00A2CFC8 /* SF-Pro-Text-HeavyItalic.otf in Resources */,
+				FA1618F5233965CE00A2CFC8 /* SF-Pro-Text-Bold.otf in Resources */,
+				FA1618E9233965CE00A2CFC8 /* SF-Pro-Text-Black.otf in Resources */,
+				FA1618EF233965CE00A2CFC8 /* SF-Pro-Text-BlackItalic.otf in Resources */,
+				FA1618EE233965CE00A2CFC8 /* SF-Pro-Text-Medium.otf in Resources */,
+				FA1618F3233965CE00A2CFC8 /* SF-Pro-Text-Semibold.otf in Resources */,
+				FA1618F0233965CE00A2CFC8 /* SF-Pro-Text-LightItalic.otf in Resources */,
+				FA1618ED233965CE00A2CFC8 /* SF-Pro-Text-Thin.otf in Resources */,
+				FA1618F6233965CE00A2CFC8 /* SF-Pro-Text-BoldItalic.otf in Resources */,
+				FA1618F4233965CE00A2CFC8 /* SF-Pro-Text-Heavy.otf in Resources */,
+				FA1618F7233965CE00A2CFC8 /* SF-Pro-Text-ThinItalic.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +440,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-DrinkNow/Pods-DrinkNow-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -348,6 +449,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -362,6 +464,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA0A5D3B2338650A00A606EB /* ItemDetailViewController.swift in Sources */,
 				FA8153552333CFA6007954A2 /* ViewController.swift in Sources */,
 				FA8153842333D369007954A2 /* CategoriasTableViewCell.swift in Sources */,
 				FA8153532333CFA6007954A2 /* AppDelegate.swift in Sources */,

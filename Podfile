@@ -9,5 +9,5 @@ target 'DrinkNow' do
   pod 'Alamofire'
   pod 'SwiftyJSON'
   pod 'AlamofireImage'
-
+  pod 'SDWebImage'
 end

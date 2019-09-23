@@ -13,4 +13,12 @@ class ItensCategoriaTableViewCell: UITableViewCell {
     @IBOutlet weak var imagemDrink: UIImageView!
     @IBOutlet weak var nomeDrink: UILabel!
     
+    override func layoutSubviews() {
+        
+        //  Estilos
+        imagemDrink.layer.masksToBounds = true
+        imagemDrink.layer.cornerRadius = 10
+        
+    }
+    
 }
