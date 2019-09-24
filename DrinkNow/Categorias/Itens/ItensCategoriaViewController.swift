@@ -30,6 +30,7 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
     var nomeCategoriaSelecionada = String()
     var drinksFiltrados = [Drink]()
     var searchActive : Bool = false
+    var refreshControl = UIRefreshControl()
     
     //  Dados que serão escritos do JSON
     var itensArray = [Drink]()
@@ -77,6 +78,16 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
                             DataCache.instance.write(object: self.itensArrayThumb as NSCoding, forKey: "imagem")
                             DataCache.instance.write(object: self.itensArrayId as NSCoding, forKey: "id")
                             
+                            //  Resgata os dados para serem usados no filtro
+                            let filterArray1 = DataCache.instance.readObject(forKey: "nome") as! Array<String>
+                            let filterArray2 = DataCache.instance.readObject(forKey: "imagem") as! Array<String>
+                            let filterArray3 = DataCache.instance.readObject(forKey: "id") as! Array<String>
+                            
+                            //  Adiciona os dados em uma array que será utilizada no filtro caso esteja sem internet
+                            for i in 0...filterArray1.count-1 {
+                                self.filter.append(Drink(nome: filterArray1[i], imagem: filterArray2[i], id: filterArray3[i]))
+                            }
+                            
                             self.tableViewCustom.reloadData()
                             self.removeSpinner()
                             
@@ -89,15 +100,9 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
             
             print("Sem Internet")
             
-            //  Resgata os dados para serem usados no filtro
-            let filterArray1 = DataCache.instance.readObject(forKey: "nome") as! Array<String>
-            let filterArray2 = DataCache.instance.readObject(forKey: "imagem") as! Array<String>
-            let filterArray3 = DataCache.instance.readObject(forKey: "id") as! Array<String>
-            
-            //  Adiciona os dados em uma array que será utilizada no filtro caso esteja sem internet
-            for i in 0...filterArray1.count-1 {
-                filter.append(Drink(nome: filterArray1[i], imagem: filterArray2[i], id: filterArray3[i]))
-            }
+            let alert = UIAlertController(title: "Alert", message: "You are offline and will navigate using app caching", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
             
             //  Atualiza a tabela
             self.tableViewCustom.reloadData()
@@ -106,11 +111,23 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
         
     }
     
+    @objc func refresh() {
+        lerJson()
+        self.tableViewCustom.reloadData()
+        self.refreshControl.endRefreshing()
+    }
+    
     //  Primeira atividade que é executada
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.lerJson()
+        
+        // Puxar para recarregar
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(refresh)
+            , for: UIControl.Event.valueChanged)
+        tableViewCustom.addSubview(refreshControl)
         
         tableViewCustom.delegate = self
         tableViewCustom.dataSource = self
@@ -128,8 +145,17 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
         if Connectivity.isConnectedToInternet() {
             numeroDeLinhas = itensArray.count
         } else {
-            let arrayItem = DataCache.instance.readObject(forKey: "nome") as! Array<String>
-            numeroDeLinhas = arrayItem.count
+            
+            if DataCache.instance.readObject(forKey: "nome") == nil {
+                
+                numeroDeLinhas = 0
+                
+            } else {
+                
+                let arrayItem = DataCache.instance.readObject(forKey: "nome") as! Array<String>
+                numeroDeLinhas = arrayItem.count
+                
+            }
         }
         
         return numeroDeLinhas

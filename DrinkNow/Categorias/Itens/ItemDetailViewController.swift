@@ -70,8 +70,13 @@ class ItemDetailViewController: UITableViewController {
                         print("Allll \(self.quantidade)")
                         
                         //  Implementando dados no Caching
+                        DataCache.instance.write(object: self.ingredientes as NSCoding, forKey: "ingredientes")
+                        DataCache.instance.write(object: self.quantidade as NSCoding, forKey: "quantidades")
                         DataCache.instance.write(object: self.intrucao as NSCoding, forKey: "instrucao")
                         DataCache.instance.write(object: self.intrucao as NSCoding, forKey: "titulo")
+                        
+                        self.title = DataCache.instance.readObject(forKey: "titulo") as? String
+                        self.intrucao = DataCache.instance.readObject(forKey: "instrucao") as! String
                         
                         self.tableViewCustom.reloadData()
                         self.removeSpinner()
@@ -81,9 +86,9 @@ class ItemDetailViewController: UITableViewController {
             }
         } else {
             
-            //  Implementando dados no Caching
-            self.title = DataCache.instance.readObject(forKey: "titulo") as? String
-            self.intrucao = DataCache.instance.readObject(forKey: "instrucao") as! String
+            let alert = UIAlertController(title: "Alert", message: "You are offline and will navigate using app caching", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
             
             //  Atualizando a tabela
             self.tableViewCustom.reloadData()
@@ -136,8 +141,11 @@ class ItemDetailViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        DataCache.instance.write(object: self.ingredientes as NSCoding, forKey: "ingredientes")
-        DataCache.instance.write(object: self.quantidade as NSCoding, forKey: "quantidades")
+        
+        if self.ingredientes != nil && self.quantidade != nil {
+            DataCache.instance.write(object: self.ingredientes as NSCoding, forKey: "ingredientes")
+            DataCache.instance.write(object: self.quantidade as NSCoding, forKey: "quantidades")
+        }
         
         var ingredientesCount = Array<String>()
         var quantidadeCount = Array<String>()

@@ -19,6 +19,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     
     //  VARIÁVEIS
     let data = NSMutableData()
+    var refreshControl = UIRefreshControl()
     
     //  URL JSON das Categorias e formato do JSON
     let urlCategoriasJson = "https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list"
@@ -66,6 +67,11 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
             }
         } else {
+            
+            let alert = UIAlertController(title: "Alert", message: "You are offline and will navigate using app caching", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
             //  Atualizando a tabela e removendo o loading
             self.tableView.reloadData()
             self.removeSpinner()
@@ -77,6 +83,12 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Puxar para recarregar
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(refresh)
+            , for: UIControl.Event.valueChanged)
+        tableView.addSubview(refreshControl)
+        
         //  Carregamento
         self.showSpinner(onView: self.view)
         searchBarCategorias.delegate = self
@@ -87,6 +99,13 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         
         //  Chama a leitura do JSON a partir da URL
         lerJson()
+    }
+    
+    //  Atualizar a tabela
+    @objc func refresh() {
+        lerJson()
+        self.tableView.reloadData()
+        self.refreshControl.endRefreshing()
     }
     
     //  ESPECIFICAÇÕES DA TABELA
@@ -101,8 +120,18 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
             numeroDeLinhas = categoriaArray.count
         } else {
             
-            let arrayCategorias = DataCache.instance.readObject(forKey: "categoriaNome") as! Array<String>
-            numeroDeLinhas = arrayCategorias.count
+            let alert = UIAlertController(title: "Alert", message: "You are offline and will navigate using app caching", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+            if DataCache.instance.readObject(forKey: "categoriaNome") == nil {
+                
+                numeroDeLinhas = 0
+                
+            } else {
+                let arrayCategorias = DataCache.instance.readObject(forKey: "categoriaNome") as! Array<String>
+                numeroDeLinhas = arrayCategorias.count
+            }
         }
         return numeroDeLinhas
     }
