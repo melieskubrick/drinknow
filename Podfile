@@ -10,4 +10,6 @@ target 'DrinkNow' do
   pod 'SwiftyJSON'
   pod 'AlamofireImage'
   pod 'SDWebImage'
+  pod 'DataCache'
+  
 end

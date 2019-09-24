@@ -112,7 +112,7 @@
         <!--Navigation Controller-->
         <scene sceneID="D6e-ds-sIl">
             <objects>
-                <navigationController id="48z-p7-LoP" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="CategoryNav" id="48z-p7-LoP" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="blackTranslucent" id="fgn-af-PQ6">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -210,6 +210,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="pTl-eN-vV6">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </navigationBar>
                     <connections>
                         <segue destination="Pui-LY-gu0" kind="relationship" relationship="rootViewController" id="PT2-T2-mtp"/>

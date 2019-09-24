@@ -11,11 +11,12 @@ import Alamofire
 import AlamofireImage
 import SwiftyJSON
 import SDWebImage
+import DataCache
 
-//  Classe de Cache
-class DataCache: NSObject {
-    static let sharedInstance = DataCache()
-    var cache = Dictionary<String, Any>()
+class Connectivity {
+    class func isConnectedToInternet() ->Bool {
+        return NetworkReachabilityManager()!.isReachable
+    }
 }
 
 class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
@@ -31,13 +32,11 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
     var searchActive : Bool = false
     
     //  Dados que serão escritos do JSON
-    var nomeDrinkArray = [String]()
-    var thumbDrinkArray = [String]()
-    var idDrinkArray = [String]()
-    
     var itensArray = [Drink]()
-    
-    //  FUNÇÕES
+    var itensArrayNome = [String]()
+    var itensArrayThumb = [String]()
+    var itensArrayId = [String]()
+    var filter = [Drink]()
     
     //  Leitura do JSON
     func lerJson() {
@@ -54,9 +53,11 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
         request.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
         request.httpBody = jsonData
         
-        Alamofire.request(request).responseJSON {
-            (response) in
-            DispatchQueue.main.async {
+        //  Se tiver internet ele conecta, se não ele irá ler o Cache
+        if Connectivity.isConnectedToInternet() {
+            self.showSpinner(onView: self.view)
+            Alamofire.request(request).responseJSON {
+                (response) in
                 
                 self.title = self.nomeCategoriaSelecionada
                 
@@ -66,13 +67,15 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
                     if (try? JSON(data: jsonData)) != nil {
                         for item in categoriesJSON["drinks"].arrayValue {
                             
-                            self.nomeDrinkArray.append(item["strDrink"].stringValue)
-                            self.thumbDrinkArray.append(item["strDrinkThumb"].stringValue)
-                            self.idDrinkArray.append(item["idDrink"].stringValue)
-                            
                             self.itensArray.append(Drink(nome: item["strDrink"].stringValue, imagem: item["strDrinkThumb"].stringValue, id: item["idDrink"].stringValue))
+                            self.itensArrayNome.append(item["strDrink"].stringValue)
+                            self.itensArrayThumb.append(item["strDrinkThumb"].stringValue)
+                            self.itensArrayId.append(item["idDrink"].stringValue)
                             
-                            DataCache.sharedInstance.cache["strDrink"] = self.nomeDrinkArray
+                            //  Implementando dados no Caching
+                            DataCache.instance.write(object: self.itensArrayNome as NSCoding, forKey: "nome")
+                            DataCache.instance.write(object: self.itensArrayThumb as NSCoding, forKey: "imagem")
+                            DataCache.instance.write(object: self.itensArrayId as NSCoding, forKey: "id")
                             
                             self.tableViewCustom.reloadData()
                             self.removeSpinner()
@@ -81,28 +84,55 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
                     }
                 }
             }
+            
+        } else {
+            
+            print("Sem Internet")
+            
+            //  Resgata os dados para serem usados no filtro
+            let filterArray1 = DataCache.instance.readObject(forKey: "nome") as! Array<String>
+            let filterArray2 = DataCache.instance.readObject(forKey: "imagem") as! Array<String>
+            let filterArray3 = DataCache.instance.readObject(forKey: "id") as! Array<String>
+            
+            //  Adiciona os dados em uma array que será utilizada no filtro caso esteja sem internet
+            for i in 0...filterArray1.count-1 {
+                filter.append(Drink(nome: filterArray1[i], imagem: filterArray2[i], id: filterArray3[i]))
+            }
+            
+            //  Atualiza a tabela
+            self.tableViewCustom.reloadData()
+            self.removeSpinner()
         }
+        
     }
     
     //  Primeira atividade que é executada
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.lerJson()
         
         tableViewCustom.delegate = self
         tableViewCustom.dataSource = self
         searchBarCustom.delegate = self
         
-        self.showSpinner(onView: self.view)
     }
     
     //  Especificações da tabela
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var numeroDeLinhas = Int()
         if(searchActive) {
             return drinksFiltrados.count
         }
-        return nomeDrinkArray.count
+        
+        if Connectivity.isConnectedToInternet() {
+            numeroDeLinhas = itensArray.count
+        } else {
+            let arrayItem = DataCache.instance.readObject(forKey: "nome") as! Array<String>
+            numeroDeLinhas = arrayItem.count
+        }
+        
+        return numeroDeLinhas
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -114,16 +144,18 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
         //  Preenchendo as linhas com nomes e imagens
         let cell: ItensCategoriaTableViewCell = self.tableViewCustom.dequeueReusableCell(withIdentifier: "cell") as! ItensCategoriaTableViewCell
         
-        if let nomedoDrink: Array = DataCache.sharedInstance.cache["strDrink"] as? Array<Any> {
-            
-            if(searchActive){
-                cell.nomeDrink.text = drinksFiltrados[indexPath.row].nome
-                cell.imagemDrink.sd_setImage(with: URL(string: drinksFiltrados[indexPath.row].imagem), placeholderImage: UIImage(named: "default"))
-            } else {
-                cell.nomeDrink.text = nomedoDrink[indexPath.row] as! String
-                cell.imagemDrink.sd_setImage(with: URL(string: thumbDrinkArray[indexPath.row]), placeholderImage: UIImage(named: "default"))
-            }
-            
+        if(searchActive){
+            cell.nomeDrink.text = drinksFiltrados[indexPath.row].nome
+        } else {
+            var nome = DataCache.instance.readObject(forKey: "nome") as! [String]
+            cell.nomeDrink.text = nome[indexPath.row]
+        }
+        
+        if(searchActive){
+            cell.imagemDrink.sd_setImage(with: URL(string: drinksFiltrados[indexPath.row].imagem), placeholderImage: UIImage(named: "default"))
+        } else {
+            var imagem = DataCache.instance.readObject(forKey: "imagem") as! [String]
+            cell.imagemDrink.sd_setImage(with: URL(string: imagem[indexPath.row]), placeholderImage: UIImage(named: "default"))
         }
         
         return cell
@@ -131,7 +163,9 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
     
     //  Quando um item da tabela é selecionado
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("o item " + nomeDrinkArray[indexPath.row] + " foi clicado na linha \(indexPath.row)")
+        
+        //  vcDetail -> Tela de detalhe do drink, onde irá mostrar o modo de preparo e as instruções
+        
         if let vcDetail : ItemDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "DetailVC") as? ItemDetailViewController {
             
             if(searchActive == true){
@@ -139,17 +173,23 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
                 vcDetail.urlDaImagem = drinksFiltrados[indexPath.row].imagem
                 vcDetail.idDrink = drinksFiltrados[indexPath.row].id
             } else {
-                vcDetail.nomeDoDrink = nomeDrinkArray[indexPath.row]
-                vcDetail.urlDaImagem = thumbDrinkArray[indexPath.row]
-                vcDetail.idDrink = idDrinkArray[indexPath.row]
+                let nome = DataCache.instance.readObject(forKey: "nome") as! [String]
+                let imagem = DataCache.instance.readObject(forKey: "imagem") as! [String]
+                let id = DataCache.instance.readObject(forKey: "id") as! [String]
+                
+                vcDetail.nomeDoDrink = nome[indexPath.row]
+                vcDetail.urlDaImagem = imagem[indexPath.row]
+                vcDetail.idDrink = id[indexPath.row]
             }
             
+            //  Atualizando a tabela
             DispatchQueue.main.async {
                 self.searchBarCustom.text = ""
                 self.tableViewCustom.reloadData()
                 self.searchActive = false
             }
             
+            //  Mostrando a tela de detalhe
             self.show(vcDetail, sender: nil)
         }
     }
@@ -177,24 +217,38 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        drinksFiltrados = itensArray.filter({ drink -> Bool in
-            guard let text = searchBarCustom.text else {return false}
-            return drink.nome.contains(text)
-        })
-        
-        if(drinksFiltrados.count == 0){
-            searchActive = false;
+        if Connectivity.isConnectedToInternet() {
+            drinksFiltrados = itensArray.filter({ drink -> Bool in
+                guard let text = searchBarCustom.text else {return false}
+                return drink.nome.contains(text)
+            })
+            
+            if(drinksFiltrados.count == 0){
+                searchActive = false;
+            } else {
+                searchActive = true;
+            }
+            tableViewCustom.reloadData()
         } else {
-            searchActive = true;
+            drinksFiltrados = filter.filter({ drink -> Bool in
+                guard let text = searchBarCustom.text else {return false}
+                return drink.nome.contains(text)
+            })
+            
+            if(drinksFiltrados.count == 0){
+                searchActive = false;
+            } else {
+                searchActive = true;
+            }
+            tableViewCustom.reloadData()
         }
-        tableViewCustom.reloadData()
+        
     }
     
 }
 
-// Carregamento
+// Carregamento personalizado
 var vSpinner : UIView?
-
 extension UIViewController {
     func showSpinner(onView : UIView) {
         let spinnerView = UIView.init(frame: onView.bounds)
