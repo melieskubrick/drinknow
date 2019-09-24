@@ -70,7 +70,7 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
                             self.thumbDrinkArray.append(item["strDrinkThumb"].stringValue)
                             self.idDrinkArray.append(item["idDrink"].stringValue)
                             
-                            self.itensArray.append(Drink(nome: item["strDrink"].stringValue, imagem: item["strDrinkThumb"].stringValue))
+                            self.itensArray.append(Drink(nome: item["strDrink"].stringValue, imagem: item["strDrinkThumb"].stringValue, id: item["idDrink"].stringValue))
                             
                             DataCache.sharedInstance.cache["strDrink"] = self.nomeDrinkArray
                             
@@ -86,14 +86,10 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
     
     //  Primeira atividade que é executada
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        DispatchQueue.main.async {
-            self.lerJson()
-        }
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.lerJson()
+        
         tableViewCustom.delegate = self
         tableViewCustom.dataSource = self
         searchBarCustom.delegate = self
@@ -119,14 +115,13 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
         let cell: ItensCategoriaTableViewCell = self.tableViewCustom.dequeueReusableCell(withIdentifier: "cell") as! ItensCategoriaTableViewCell
         
         if let nomedoDrink: Array = DataCache.sharedInstance.cache["strDrink"] as? Array<Any> {
-            let nomeDosDrinks = nomedoDrink[indexPath.row]
-            cell.imagemDrink.sd_setImage(with: URL(string: thumbDrinkArray[indexPath.row]), placeholderImage: UIImage(named: "default"))
             
             if(searchActive){
                 cell.nomeDrink.text = drinksFiltrados[indexPath.row].nome
                 cell.imagemDrink.sd_setImage(with: URL(string: drinksFiltrados[indexPath.row].imagem), placeholderImage: UIImage(named: "default"))
             } else {
-                cell.nomeDrink.text = nomeDosDrinks as? String
+                cell.nomeDrink.text = nomedoDrink[indexPath.row] as! String
+                cell.imagemDrink.sd_setImage(with: URL(string: thumbDrinkArray[indexPath.row]), placeholderImage: UIImage(named: "default"))
             }
             
         }
@@ -139,15 +134,21 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
         print("o item " + nomeDrinkArray[indexPath.row] + " foi clicado na linha \(indexPath.row)")
         if let vcDetail : ItemDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "DetailVC") as? ItemDetailViewController {
             
-            vcDetail.urlDaImagem = thumbDrinkArray[indexPath.row]
-            vcDetail.idDrink = idDrinkArray[indexPath.row]
-            
             if(searchActive == true){
                 vcDetail.nomeDoDrink = drinksFiltrados[indexPath.row].nome
+                vcDetail.urlDaImagem = drinksFiltrados[indexPath.row].imagem
+                vcDetail.idDrink = drinksFiltrados[indexPath.row].id
             } else {
                 vcDetail.nomeDoDrink = nomeDrinkArray[indexPath.row]
+                vcDetail.urlDaImagem = thumbDrinkArray[indexPath.row]
+                vcDetail.idDrink = idDrinkArray[indexPath.row]
             }
             
+            DispatchQueue.main.async {
+                self.searchBarCustom.text = ""
+                self.tableViewCustom.reloadData()
+                self.searchActive = false
+            }
             
             self.show(vcDetail, sender: nil)
         }
@@ -175,18 +176,13 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        drinksFiltrados = itensArray.filter({ drink -> Bool in
-//            let tmp: NSString = text as NSString
-//            let range = tmp.range(of: searchText, options: .caseInsensitive)
-//            return range.location != NSNotFound
-//        })
         
         drinksFiltrados = itensArray.filter({ drink -> Bool in
             guard let text = searchBarCustom.text else {return false}
             return drink.nome.contains(text)
         })
         
-        if(drinksFiltrados.count == 0 || drinksFiltrados.count == nomeDrinkArray.count){
+        if(drinksFiltrados.count == 0){
             searchActive = false;
         } else {
             searchActive = true;
@@ -226,10 +222,12 @@ extension UIViewController {
 class Drink {
     let nome: String
     let imagem: String
+    let id: String
     
-    init(nome: String, imagem: String) {
+    init(nome: String, imagem: String, id: String) {
         self.nome = nome
         self.imagem = imagem
+        self.id = id
     }
     
 }

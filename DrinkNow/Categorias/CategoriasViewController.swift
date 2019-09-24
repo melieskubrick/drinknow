@@ -114,6 +114,12 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
                 vcDetail.nomeCategoriaSelecionada = categoriaArray[indexPath.row]
             }
             
+            DispatchQueue.main.async {
+                self.searchBarCategorias.text = ""
+                self.tableView.reloadData()
+                self.searchActive = false
+            }
+            
             self.show(vcDetail, sender: nil)
         }
     }
