@@ -79,16 +79,6 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
                             DataCache.instance.write(object: self.itensArrayThumb as NSCoding, forKey: "imagem")
                             DataCache.instance.write(object: self.itensArrayId as NSCoding, forKey: "id")
                             
-                            //  Resgata os dados para serem usados no filtro
-                            let filterArray1 = DataCache.instance.readObject(forKey: "nome") as! Array<String>
-                            let filterArray2 = DataCache.instance.readObject(forKey: "imagem") as! Array<String>
-                            let filterArray3 = DataCache.instance.readObject(forKey: "id") as! Array<String>
-                            
-                            //  Adiciona os dados em uma array que será utilizada no filtro caso esteja sem internet
-                            for i in 0...filterArray1.count-1 {
-                                self.filter.append(Drink(nome: filterArray1[i], imagem: filterArray2[i], id: filterArray3[i]))
-                            }
-                            
                             self.tableViewCustom.reloadData()
                             self.removeSpinner()
                             
@@ -100,6 +90,20 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
         } else {
             
             print("Sem Internet")
+            
+            if DataCache.instance.readObject(forKey: "nome") != nil || DataCache.instance.readObject(forKey: "imagem") != nil || DataCache.instance.readObject(forKey: "id") != nil {
+                
+                //  Resgata os dados para serem usados no filtro
+                let filterArray1 = DataCache.instance.readObject(forKey: "nome") as! Array<String>
+                let filterArray2 = DataCache.instance.readObject(forKey: "imagem") as! Array<String>
+                let filterArray3 = DataCache.instance.readObject(forKey: "id") as! Array<String>
+                
+                //  Adiciona os dados em uma array que será utilizada no filtro caso esteja sem internet
+                for i in 0...filterArray1.count-1 {
+                    self.filter.append(Drink(nome: filterArray1[i], imagem: filterArray2[i], id: filterArray3[i]))
+                }
+                
+            }
             
             self.title = DataCache.instance.readObject(forKey: "nomeCategoria") as? String
             
@@ -120,11 +124,12 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
         self.refreshControl.endRefreshing()
     }
     
-    //  Primeira atividade que é executada
+    override func viewWillAppear(_ animated: Bool) {
+        self.lerJson()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.lerJson()
         
         // Puxar para recarregar
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
@@ -135,12 +140,14 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
         tableViewCustom.delegate = self
         tableViewCustom.dataSource = self
         searchBarCustom.delegate = self
+        tableViewCustom.reloadData()
         
     }
     
     //  Especificações da tabela
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var numeroDeLinhas = Int()
+        
         if(searchActive) {
             return drinksFiltrados.count
         }

@@ -70,7 +70,6 @@ class ItemDetailViewController: UITableViewController {
                         DataCache.instance.write(object: self.ingredientes as NSCoding, forKey: "ingredientes")
                         DataCache.instance.write(object: self.quantidade as NSCoding, forKey: "quantidades")
                         DataCache.instance.write(object: self.intrucao as NSCoding, forKey: "instrucao")
-                        DataCache.instance.write(object: self.intrucao as NSCoding, forKey: "titulo")
                         
                         self.intrucao = DataCache.instance.readObject(forKey: "instrucao") as! String
                         
@@ -89,6 +88,7 @@ class ItemDetailViewController: UITableViewController {
             //  Atualizando a tabela
             self.tableViewCustom.reloadData()
             self.removeSpinner()
+            
         }
     }
     
@@ -143,20 +143,29 @@ class ItemDetailViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        var ingredientesCount = Array<String>()
-        var quantidadeCount = Array<String>()
-        ingredientesCount = DataCache.instance.readObject(forKey: "ingredientes") as! [String]
-        quantidadeCount = DataCache.instance.readObject(forKey: "quantidades") as! [String]
         
         var linhas: Int!
+        
         if (section == 0){
             linhas = 1
         }
         if (section == 1){
-            linhas = ingredientesCount.count
+            
+            if DataCache.instance.readObject(forKey: "ingredientes") != nil {
+                let itens = DataCache.instance.readObject(forKey: "ingredientes") as! [String]
+                linhas = itens.count
+            } else {
+                linhas = 0
+            }
+            
         }
         if (section == 2){
-            linhas = quantidadeCount.count
+            if DataCache.instance.readObject(forKey: "quantidades") != nil {
+                let itens = DataCache.instance.readObject(forKey: "quantidades") as! [String]
+                linhas = itens.count
+            } else {
+                linhas = 0
+            }
         }
         
         return linhas
@@ -164,9 +173,6 @@ class ItemDetailViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CellDetail = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! CellDetail
-        
-        var nomesIngredientes = DataCache.instance.readObject(forKey: "ingredientes") as! Array<String>
-        var nomesQuantidades = DataCache.instance.readObject(forKey: "quantidades") as! Array<String>
         
         let section = indexPath.section
         
@@ -181,11 +187,16 @@ class ItemDetailViewController: UITableViewController {
             
         } else if section == 1 {
             
+            let nomesIngredientes = DataCache.instance.readObject(forKey: "ingredientes") as! [String]
+            
             cell.ingrediente.text = nomesIngredientes[indexPath.row]
             let urlImage = nomesIngredientes[indexPath.row].replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
             cell.imagemIngrediente.sd_setImage(with: URL(string: "https://www.thecocktaildb.com/images/ingredients/\(urlImage).png"), placeholderImage: UIImage(named: "default"))
             
         } else if section == 2 {
+            
+            let nomesIngredientes = DataCache.instance.readObject(forKey: "ingredientes") as! [String]
+            let nomesQuantidades = DataCache.instance.readObject(forKey: "quantidades") as! [String]
             
             cell.ingrediente.text = "\(nomesQuantidades[indexPath.row]) \(nomesIngredientes[indexPath.row])"
             let urlImage = nomesIngredientes[indexPath.row].replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)

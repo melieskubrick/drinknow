@@ -79,6 +79,10 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        lerJson()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -87,6 +91,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         refreshControl.addTarget(self, action: #selector(refresh)
             , for: UIControl.Event.valueChanged)
         tableView.addSubview(refreshControl)
+        tableView.reloadData()
         
         //  Carregamento
         self.showSpinner(onView: self.view)
@@ -96,14 +101,11 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         navigationController?.navigationBar.barTintColor = UIColor(red: 76/255, green: 156/255, blue: 255/55, alpha: 1)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
-        //  Chama a leitura do JSON
-        lerJson()
     }
     
     //  Atualizar a tabela
     @objc func refresh() {
         lerJson()
-        self.tableView.reloadData()
         self.refreshControl.endRefreshing()
     }
     
@@ -111,24 +113,28 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var numeroDeLinhas = Int()
         
-        if(searchActive) {
-            return categoriasFiltradas.count
-        }
         if Connectivity.isConnectedToInternet() {
-            numeroDeLinhas = arrayCategorias.count
-        } else {
-            
-            let alert = UIAlertController(title: "Alert", message: "You are offline and will navigate using app caching", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            
-            if DataCache.instance.readObject(forKey: "categoriaNome") == nil {
-                numeroDeLinhas = 0
+            if(searchActive) {
+                numeroDeLinhas = categoriasFiltradas.count
             } else {
-                let arrayCategorias = DataCache.instance.readObject(forKey: "categoriaNome") as! Array<String>
                 numeroDeLinhas = arrayCategorias.count
             }
+            
+        } else {
+            
+            if(searchActive) {
+                numeroDeLinhas = categoriasFiltradas.count
+            } else {
+                if DataCache.instance.readObject(forKey: "categoriaNome") == nil {
+                    numeroDeLinhas = 0
+                } else {
+                    let arrayCategorias = DataCache.instance.readObject(forKey: "categoriaNome") as! Array<String>
+                    numeroDeLinhas = arrayCategorias.count
+                }
+            }
         }
+            
+        
         return numeroDeLinhas
     }
     
@@ -140,7 +146,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         
         let cell: CategoriasTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! CategoriasTableViewCell
         
-        if(searchActive){
+        if(searchActive) {
             cell.nomeCategoria.text = categoriasFiltradas[indexPath.row]
         } else {
             var arrayCat = DataCache.instance.readObject(forKey: "categoriaNome") as! Array<String>
@@ -194,7 +200,6 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false;
-        self.searchBarCategorias.endEditing(true)
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
