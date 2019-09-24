@@ -21,7 +21,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     let urlCategoriasJson = "https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list"
     let json = "{\"\":\"\"}"
     var categoriaArray = [String]()
-    var categoriasFiltradas:[String] = []
+    var categoriasFiltradas = [String]()
     var searchActive : Bool = false
     let itemName = "myJSONFromWeb"
     let defaults = UserDefaults.standard
@@ -50,8 +50,9 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
                     
                     DataCache.sharedInstance.cache["catArray"] = self.categoriaArray
                     
-                    
                     self.tableView.reloadData()
+                    self.removeSpinner()
+                    
                 }
             }
         }
@@ -60,6 +61,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     //  Primeira atividade que é executada
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.showSpinner(onView: self.view)
         searchBarCategorias.delegate = self
         lerJson()
     }
@@ -101,18 +103,19 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         
         if let vcDetail : ItensCategoriaViewController = self.storyboard?.instantiateViewController(withIdentifier: "DetailCategorias") as? ItensCategoriaViewController {
             
-            if(searchActive){
+            if(searchActive == true){
                 vcDetail.nomeCategoriaSelecionada = categoriasFiltradas[indexPath.row]
             } else {
                 vcDetail.nomeCategoriaSelecionada = categoriaArray[indexPath.row]
             }
+            
             self.show(vcDetail, sender: nil)
         }
     }
     
     //  Configurações da Search Bar
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchActive = true
+        searchActive = false
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -134,7 +137,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
             return range.location != NSNotFound
         })
         
-        if(categoriasFiltradas.count == 0){
+        if(categoriasFiltradas.count == 0 || categoriasFiltradas.count == categoriaArray.count){
             searchActive = false;
         } else {
             searchActive = true;

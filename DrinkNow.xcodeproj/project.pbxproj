@@ -27,6 +27,7 @@
 		FA1618F7233965CE00A2CFC8 /* SF-Pro-Text-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618E5233965CE00A2CFC8 /* SF-Pro-Text-ThinItalic.otf */; };
 		FA1618F8233965CE00A2CFC8 /* SF-Pro-Text-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618E6233965CE00A2CFC8 /* SF-Pro-Text-RegularItalic.otf */; };
 		FA1618F9233965CE00A2CFC8 /* SF-Pro-Text-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA1618E7233965CE00A2CFC8 /* SF-Pro-Text-SemiboldItalic.otf */; };
+		FA16190223399A1A00A2CFC8 /* IngredientesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA16190123399A1A00A2CFC8 /* IngredientesCell.swift */; };
 		FA8153532333CFA6007954A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8153522333CFA6007954A2 /* AppDelegate.swift */; };
 		FA8153552333CFA6007954A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8153542333CFA6007954A2 /* ViewController.swift */; };
 		FA8153582333CFA6007954A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA8153562333CFA6007954A2 /* Main.storyboard */; };
@@ -81,6 +82,7 @@
 		FA1618E6233965CE00A2CFC8 /* SF-Pro-Text-RegularItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-RegularItalic.otf"; sourceTree = "<group>"; };
 		FA1618E7233965CE00A2CFC8 /* SF-Pro-Text-SemiboldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-SemiboldItalic.otf"; sourceTree = "<group>"; };
 		FA1618FB23396C5B00A2CFC8 /* AwesomeCache.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AwesomeCache.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA16190123399A1A00A2CFC8 /* IngredientesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientesCell.swift; sourceTree = "<group>"; };
 		FA81534F2333CFA6007954A2 /* DrinkNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA8153522333CFA6007954A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA8153542333CFA6007954A2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 				FA8153862333F94C007954A2 /* ItensCategoriaViewController.swift */,
 				FA8153882333F961007954A2 /* ItensCategoriaTableViewCell.swift */,
 				FA0A5D3A2338650A00A606EB /* ItemDetailViewController.swift */,
+				FA16190123399A1A00A2CFC8 /* IngredientesCell.swift */,
 			);
 			path = Itens;
 			sourceTree = "<group>";
@@ -466,6 +469,7 @@
 			files = (
 				FA0A5D3B2338650A00A606EB /* ItemDetailViewController.swift in Sources */,
 				FA8153552333CFA6007954A2 /* ViewController.swift in Sources */,
+				FA16190223399A1A00A2CFC8 /* IngredientesCell.swift in Sources */,
 				FA8153842333D369007954A2 /* CategoriasTableViewCell.swift in Sources */,
 				FA8153532333CFA6007954A2 /* AppDelegate.swift in Sources */,
 				FA8153892333F961007954A2 /* ItensCategoriaTableViewCell.swift in Sources */,

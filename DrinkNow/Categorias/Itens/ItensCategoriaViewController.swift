@@ -123,8 +123,9 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
             
             vcDetail.nomeDoDrink = nomeDrinkArray[indexPath.row]
             vcDetail.urlDaImagem = thumbDrinkArray[indexPath.row]
+            vcDetail.idDrink = idDrinkArray[indexPath.row]
             
-            self.present(vcDetail, animated: true, completion: nil)
+            self.show(vcDetail, sender: nil)
         }
     }
     
@@ -134,6 +135,7 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
     
 }
 
+// Carregamento
 var vSpinner : UIView?
 
 extension UIViewController {
