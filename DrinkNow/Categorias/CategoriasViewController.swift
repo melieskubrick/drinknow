@@ -20,13 +20,8 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     //  VARIÁVEIS
     let data = NSMutableData()
     var refreshControl = UIRefreshControl()
-    
-    //  URL JSON das Categorias e formato do JSON
-    let urlCategoriasJson = "https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list"
-    let json = "{\"\":\"\"}"
-    
     //  Array responsável pelo armazenamento das categorias em formato String
-    var categoriaArray = [String]()
+    var arrayCategorias = [String]()
     
     //  Feature para funcionamento da barra de pesquisa
     var searchActive : Bool = false
@@ -35,29 +30,33 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     //  Leitura do JSON a partir da URL
     func lerJson() {
         
-        let url = URL(string: urlCategoriasJson)!
-        let jsonData = json.data(using: .utf8, allowLossyConversion: false)!
+        //  Configuração para requisição de leitura do JSON
+        let urlCategorias = "https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list"
+        let formatoJson = "{\"\":\"\"}"
         
-        var request = URLRequest(url: url)
+        let urlJson = URL(string: urlCategorias)!
+        let jsonDados = formatoJson.data(using: .utf8, allowLossyConversion: false)!
+        
+        var request = URLRequest(url: urlJson)
         request.httpMethod = HTTPMethod.post.rawValue
         request.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonData
+        request.httpBody = jsonDados
+        
         
         //  Verificando internet
         if Connectivity.isConnectedToInternet() {
-            Alamofire.request(request).responseJSON {
-                (response) in
+            
+            Alamofire.request(request).responseJSON { (response) in
+                let categoriasJSON: JSON = JSON(response.result.value!)
                 
-                let categoriesJSON: JSON = JSON(response.result.value!)
-                
-                if (try? JSON(data: jsonData)) != nil {
-                    for item in categoriesJSON["drinks"].arrayValue {
+                if (try? JSON(data: jsonDados)) != nil {
+                    for item in categoriasJSON["drinks"].arrayValue {
                         
                         //  Inserindo os nomes das categorias do JSON no Array de categorias
-                        self.categoriaArray.append(item["strCategory"].stringValue)
+                        self.arrayCategorias.append(item["strCategory"].stringValue)
                         
                         //  Inserindo as o array de categorias em Caching
-                        DataCache.instance.write(object: self.categoriaArray as NSCoding, forKey: "categoriaNome")
+                        DataCache.instance.write(object: self.arrayCategorias as NSCoding, forKey: "categoriaNome")
                         
                         //  Atualizando a tabela e removendo o loading
                         self.tableView.reloadData()
@@ -75,11 +74,11 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
             //  Atualizando a tabela e removendo o loading
             self.tableView.reloadData()
             self.removeSpinner()
+            
         }
         
     }
     
-    //  Primeira atividade que é executada
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -97,7 +96,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         navigationController?.navigationBar.barTintColor = UIColor(red: 76/255, green: 156/255, blue: 255/55, alpha: 1)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
-        //  Chama a leitura do JSON a partir da URL
+        //  Chama a leitura do JSON
         lerJson()
     }
     
@@ -109,15 +108,14 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     //  ESPECIFICAÇÕES DA TABELA
-    
-    //  Número de linhas da tabela
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var numeroDeLinhas = Int()
+        
         if(searchActive) {
             return categoriasFiltradas.count
         }
         if Connectivity.isConnectedToInternet() {
-            numeroDeLinhas = categoriaArray.count
+            numeroDeLinhas = arrayCategorias.count
         } else {
             
             let alert = UIAlertController(title: "Alert", message: "You are offline and will navigate using app caching", preferredStyle: UIAlertController.Style.alert)
@@ -125,9 +123,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
             self.present(alert, animated: true, completion: nil)
             
             if DataCache.instance.readObject(forKey: "categoriaNome") == nil {
-                
                 numeroDeLinhas = 0
-                
             } else {
                 let arrayCategorias = DataCache.instance.readObject(forKey: "categoriaNome") as! Array<String>
                 numeroDeLinhas = arrayCategorias.count
@@ -136,12 +132,10 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         return numeroDeLinhas
     }
     
-    //  Número de de Seções da tabela
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    //  Preenchimento das linhas com os dados do JSON
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell: CategoriasTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! CategoriasTableViewCell
@@ -156,12 +150,10 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         return cell
     }
     
-    //  Altura da linha na tabela
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
     
-    //  Quando uma linha for selecionada
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         //  vcDetail -> Tela de lista de drinks onde irá mostrar os drinks daquela determiada categoria
@@ -193,21 +185,17 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchActive = false
     }
-    
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         searchActive = false;
     }
-    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false;
         self.searchBarCategorias.endEditing(true)
     }
-    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false;
         self.searchBarCategorias.endEditing(true)
     }
-    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         let categoria = DataCache.instance.readObject(forKey: "categoriaNome") as! Array<String>
@@ -218,7 +206,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
             return range.location != NSNotFound
         })
         
-        if(categoriasFiltradas.count == 0 || categoriasFiltradas.count == categoriaArray.count){
+        if(categoriasFiltradas.count == 0 || categoriasFiltradas.count == arrayCategorias.count){
             searchActive = false;
         } else {
             searchActive = true;

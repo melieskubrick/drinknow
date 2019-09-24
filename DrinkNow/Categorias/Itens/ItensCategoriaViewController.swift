@@ -41,31 +41,32 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
     
     //  Leitura do JSON
     func lerJson() {
+        
         //  Configurações do JSON
         let nomeCategoriaSelecionadaFormatado = nomeCategoriaSelecionada.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
-        let urlCategoriasJson = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=\(nomeCategoriaSelecionadaFormatado)"
+        let urlDrinks = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=\(nomeCategoriaSelecionadaFormatado)"
         
-        let json = "{\"\":\"\"}"
-        let url = URL(string: urlCategoriasJson)!
-        let jsonData = json.data(using: .utf8, allowLossyConversion: false)!
+        let jsonFormato = "{\"\":\"\"}"
+        let url = URL(string: urlDrinks)!
+        let jsonDados = jsonFormato.data(using: .utf8, allowLossyConversion: false)!
         
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.post.rawValue
         request.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonData
+        request.httpBody = jsonDados
         
         //  Se tiver internet ele conecta, se não ele irá ler o Cache
         if Connectivity.isConnectedToInternet() {
             self.showSpinner(onView: self.view)
-            Alamofire.request(request).responseJSON {
-                (response) in
+            Alamofire.request(request).responseJSON { (response) in
                 
                 self.title = self.nomeCategoriaSelecionada
+                DataCache.instance.write(object: self.nomeCategoriaSelecionada as NSCoding, forKey: "nomeCategoria")
                 
                 if self.nomeCategoriaSelecionada.isEmpty == false {
                     let categoriesJSON: JSON = JSON(response.result.value!)
                     
-                    if (try? JSON(data: jsonData)) != nil {
+                    if (try? JSON(data: jsonDados)) != nil {
                         for item in categoriesJSON["drinks"].arrayValue {
                             
                             self.itensArray.append(Drink(nome: item["strDrink"].stringValue, imagem: item["strDrinkThumb"].stringValue, id: item["idDrink"].stringValue))
@@ -99,6 +100,8 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
         } else {
             
             print("Sem Internet")
+            
+            self.title = DataCache.instance.readObject(forKey: "nomeCategoria") as? String
             
             let alert = UIAlertController(title: "Alert", message: "You are offline and will navigate using app caching", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))

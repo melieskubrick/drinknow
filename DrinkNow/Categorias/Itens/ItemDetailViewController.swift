@@ -32,8 +32,8 @@ class ItemDetailViewController: UITableViewController {
     func lerJson() {
         
         //  URL do modo de preparo de um drink selecionado
-        let urlIngredientesJson = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=\(idDrink as! String)"
-        let url = URL(string: urlIngredientesJson)!
+        let urlIngredientes = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=\(idDrink as! String)"
+        let url = URL(string: urlIngredientes)!
         let jsonData = json.data(using: .utf8, allowLossyConversion: false)!
         
         var request = URLRequest(url: url)
@@ -65,9 +65,6 @@ class ItemDetailViewController: UITableViewController {
                         
                         //  Recupera os dados de intrução do drink
                         self.intrucao = item["strInstructions"].stringValue
-                        self.title = item["strDrink"].stringValue
-                        
-                        print("Allll \(self.quantidade)")
                         
                         //  Implementando dados no Caching
                         DataCache.instance.write(object: self.ingredientes as NSCoding, forKey: "ingredientes")
@@ -75,7 +72,6 @@ class ItemDetailViewController: UITableViewController {
                         DataCache.instance.write(object: self.intrucao as NSCoding, forKey: "instrucao")
                         DataCache.instance.write(object: self.intrucao as NSCoding, forKey: "titulo")
                         
-                        self.title = DataCache.instance.readObject(forKey: "titulo") as? String
                         self.intrucao = DataCache.instance.readObject(forKey: "instrucao") as! String
                         
                         self.tableViewCustom.reloadData()
@@ -96,9 +92,14 @@ class ItemDetailViewController: UITableViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        lerJson()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        lerJson()
+        
+        self.title = nomeDoDrink
         
         tableViewCustom.delegate = self
         tableViewCustom.dataSource = self
@@ -142,11 +143,6 @@ class ItemDetailViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if self.ingredientes != nil && self.quantidade != nil {
-            DataCache.instance.write(object: self.ingredientes as NSCoding, forKey: "ingredientes")
-            DataCache.instance.write(object: self.quantidade as NSCoding, forKey: "quantidades")
-        }
-        
         var ingredientesCount = Array<String>()
         var quantidadeCount = Array<String>()
         ingredientesCount = DataCache.instance.readObject(forKey: "ingredientes") as! [String]
@@ -181,7 +177,7 @@ class ItemDetailViewController: UITableViewController {
         if section == 0 {
             
             cell.imagemIngrediente.image = UIImage(named: "Intructions")
-            cell.ingrediente.text = intrucao
+            cell.ingrediente.text = DataCache.instance.readObject(forKey: "instrucao") as? String
             
         } else if section == 1 {
             
