@@ -24,6 +24,7 @@ class ItemDetailViewController: UITableViewController {
     let json = "{\"\":\"\"}"
     var ingredientes = [String]()
     var quantidade = [String]()
+    var intrucao = String()
     
     @IBOutlet weak var nameDrink: UILabel!
     @IBOutlet weak var imageDrink: UIImageView!
@@ -51,13 +52,17 @@ class ItemDetailViewController: UITableViewController {
                         if item["strIngredient\(i)"].stringValue.isEmpty == false && item["strIngredient\(i)"].stringValue != " " {
                             self.ingredientes.append(item["strIngredient\(i)"].stringValue)
                         }
-                        if item["strMeasure\(i)"].stringValue.isEmpty == false && item["strMeasure\(i)"].stringValue != " " {
+                        if item["strMeasure\(i)"].stringValue.isEmpty == false && item["strMeasure\(i)"].stringValue != " " && item["strMeasure\(i)"].stringValue != "\n" {
                             self.quantidade.append(item["strMeasure\(i)"].stringValue)
                         }
                     }
                     
+                    self.intrucao = item["strInstructions"].stringValue
+                    
                     print("Ingredientes Melies \(self.ingredientes)")
                     print("Ingredientes Melies \(self.quantidade)")
+                    
+                    self.title = item["strDrink"].stringValue
                     
                     self.tableViewCustom.reloadData()
                     self.removeSpinner()
@@ -80,16 +85,31 @@ class ItemDetailViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        var height = CGFloat()
+        let section = indexPath.section
+        
+        if section == 0 {
+            height = UITableView.automaticDimension
+        } else {
+            height = 50
+        }
+        
+        return height
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var retorno: String!
-        
         if (section == 0){
-            retorno = "Ingredientes"
+            retorno = "Instrução"
         }
         if (section == 1){
+            retorno = "Ingredientes"
+        }
+        if (section == 2){
             retorno = "Modo de preparo"
         }
         
@@ -98,11 +118,13 @@ class ItemDetailViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var linhas: Int!
-        
         if (section == 0){
-            linhas = ingredientes.count
+            linhas = 1
         }
         if (section == 1){
+            linhas = ingredientes.count
+        }
+        if (section == 2){
             linhas = quantidade.count
         }
         
@@ -110,17 +132,24 @@ class ItemDetailViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let ingredientesCell: IngredientesCell = self.tableView.dequeueReusableCell(withIdentifier: "Ingredientes") as! IngredientesCell
+        let cell: CellDetail = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! CellDetail
         
         let section = indexPath.section
-        
         if section == 0 {
-            ingredientesCell.ingrediente.text = ingredientes[indexPath.row]
+            cell.imagemIngrediente.image = UIImage(named: "Intructions")
+            cell.ingrediente.text = intrucao
         } else if section == 1 {
-            ingredientesCell.ingrediente.text = "\(quantidade[indexPath.row]) \(ingredientes[indexPath.row])"
+            cell.ingrediente.text = ingredientes[indexPath.row]
+            
+            let urlImage = ingredientes[indexPath.row].replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
+            cell.imagemIngrediente.sd_setImage(with: URL(string: "https://www.thecocktaildb.com/images/ingredients/\(urlImage).png"), placeholderImage: UIImage(named: "default"))
+        } else if section == 2 {
+            cell.ingrediente.text = "\(quantidade[indexPath.row]) \(ingredientes[indexPath.row])"
+            let urlImage = ingredientes[indexPath.row].replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
+            cell.imagemIngrediente.sd_setImage(with: URL(string: "https://www.thecocktaildb.com/images/ingredients/\(urlImage).png"), placeholderImage: UIImage(named: "default"))
         }
         
-        return ingredientesCell
+        return cell
     }
     
 }

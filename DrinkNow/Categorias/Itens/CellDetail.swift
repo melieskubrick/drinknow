@@ -8,8 +8,9 @@
 
 import UIKit
 
-class IngredientesCell: UITableViewCell {
+class CellDetail: UITableViewCell {
     
+    @IBOutlet weak var imagemIngrediente: UIImageView!
     @IBOutlet weak var ingrediente: UILabel!
     
 }

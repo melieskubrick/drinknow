@@ -113,7 +113,7 @@
         <scene sceneID="D6e-ds-sIl">
             <objects>
                 <navigationController id="48z-p7-LoP" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="fgn-af-PQ6">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="blackTranslucent" id="fgn-af-PQ6">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -136,9 +136,14 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wpQ-p3-hk4">
                                 <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Pesquise um drink" id="1PB-9c-dzL">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" rowHeight="150" id="lRK-eN-rUO" customClass="ItensCategoriaTableViewCell" customModule="DrinkNow" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="150"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="150" id="lRK-eN-rUO" customClass="ItensCategoriaTableViewCell" customModule="DrinkNow" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="72" width="414" height="150"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lRK-eN-rUO" id="ENA-Bu-xRt">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="149.5"/>
@@ -190,6 +195,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Nome da categoria" id="XBS-iY-w7E"/>
                     <connections>
+                        <outlet property="searchBarCustom" destination="1PB-9c-dzL" id="WID-Gl-217"/>
                         <outlet property="tableViewCustom" destination="wpQ-p3-hk4" id="L7R-CF-Mf6"/>
                     </connections>
                 </viewController>
@@ -222,33 +228,43 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <imageView key="tableHeaderView" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="dq3-ms-YGB">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Ingredientes" rowHeight="50" id="1WD-Lt-JZu" customClass="IngredientesCell" customModule="DrinkNow" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="228" width="414" height="50"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" rowHeight="70" id="zCQ-aO-Wy7" customClass="CellDetail" customModule="DrinkNow" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="442" width="414" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1WD-Lt-JZu" id="UKy-Bj-t17">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="49.5"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zCQ-aO-Wy7" id="sEs-g7-18J">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="69.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DVr-wD-azr">
-                                            <rect key="frame" x="20" y="0.0" width="394" height="50"/>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="H4l-Tx-0NV">
+                                            <rect key="frame" x="12" y="12" width="45" height="45"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="45" id="TS4-Hh-6gE"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="20" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZf-gd-OD6">
+                                            <rect key="frame" x="65" y="5" width="339" height="58"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="DVr-wD-azr" secondAttribute="trailing" id="5mW-Nc-sfN"/>
-                                        <constraint firstItem="DVr-wD-azr" firstAttribute="top" secondItem="UKy-Bj-t17" secondAttribute="top" id="73r-6x-IAP"/>
-                                        <constraint firstItem="DVr-wD-azr" firstAttribute="leading" secondItem="UKy-Bj-t17" secondAttribute="leading" constant="20" id="D1H-AM-gmZ"/>
-                                        <constraint firstAttribute="bottom" secondItem="DVr-wD-azr" secondAttribute="bottom" constant="-0.5" id="j3V-JS-YoJ"/>
+                                        <constraint firstAttribute="bottom" secondItem="H4l-Tx-0NV" secondAttribute="bottom" constant="12.5" id="5tJ-lo-iwh"/>
+                                        <constraint firstItem="H4l-Tx-0NV" firstAttribute="leading" secondItem="sEs-g7-18J" secondAttribute="leading" constant="12" id="9O6-kR-A42"/>
+                                        <constraint firstItem="fZf-gd-OD6" firstAttribute="top" secondItem="sEs-g7-18J" secondAttribute="top" constant="5" id="IB9-6J-50V"/>
+                                        <constraint firstAttribute="bottom" secondItem="fZf-gd-OD6" secondAttribute="bottom" constant="6.5" id="YU7-QX-kbT"/>
+                                        <constraint firstAttribute="trailing" secondItem="fZf-gd-OD6" secondAttribute="trailing" constant="10" id="lWV-NE-NeB"/>
+                                        <constraint firstItem="H4l-Tx-0NV" firstAttribute="top" secondItem="sEs-g7-18J" secondAttribute="top" constant="12" id="lcl-4s-8DN"/>
+                                        <constraint firstItem="fZf-gd-OD6" firstAttribute="leading" secondItem="H4l-Tx-0NV" secondAttribute="trailing" constant="8" id="s6j-S0-lVN"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="ingrediente" destination="DVr-wD-azr" id="q7K-VE-z5F"/>
+                                    <outlet property="imagemIngrediente" destination="H4l-Tx-0NV" id="X6z-Tx-wHB"/>
+                                    <outlet property="ingrediente" destination="fZf-gd-OD6" id="iVP-Zq-MMy"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

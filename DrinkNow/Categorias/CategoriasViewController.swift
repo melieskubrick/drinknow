@@ -63,6 +63,11 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         super.viewDidLoad()
         self.showSpinner(onView: self.view)
         searchBarCategorias.delegate = self
+        
+        //  Nav Bar
+        navigationController?.navigationBar.barTintColor = UIColor(red: 76/255, green: 156/255, blue: 255/55, alpha: 1)
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        
         lerJson()
     }
     
@@ -143,6 +148,11 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
             searchActive = true;
         }
         self.tableView.reloadData()
+    }
+    
+    //  Status Bar Branco
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
 }
