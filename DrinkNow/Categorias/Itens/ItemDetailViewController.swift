@@ -123,13 +123,13 @@ class ItemDetailViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var retorno: String!
         if (section == 0){
-            retorno = "Instrução"
+            retorno = "Instruction"
         }
         if (section == 1){
-            retorno = "Ingredientes"
+            retorno = "Ingredients"
         }
         if (section == 2){
-            retorno = "Modo de preparo"
+            retorno = "Method of preparation"
         }
         
         return retorno

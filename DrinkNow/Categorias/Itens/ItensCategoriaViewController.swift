@@ -191,11 +191,14 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
             
             //  Mostrando a tela de detalhe
             self.show(vcDetail, sender: nil)
+            
+            //  Removendo Teclado
+            self.searchBarCustom.endEditing(true)
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150
+        return UITableView.automaticDimension
     }
     
     //  Configurações da Search Bar
@@ -209,10 +212,12 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false;
+        self.searchBarCustom.endEditing(true)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false;
+        self.searchBarCustom.endEditing(true)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -243,6 +248,10 @@ class ItensCategoriaViewController: UIViewController, UITableViewDelegate, UITab
             tableViewCustom.reloadData()
         }
         
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.searchBarCustom.endEditing(true)
     }
     
 }

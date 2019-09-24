@@ -18,23 +18,22 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var searchBarCategorias: UISearchBar!
     
     //  VARIÁVEIS
-    
     let data = NSMutableData()
     
-    //  URL JSON das Categorias
+    //  URL JSON das Categorias e formato do JSON
     let urlCategoriasJson = "https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list"
-    //  Formato do JSON
     let json = "{\"\":\"\"}"
     
-    //  Arrays que serão preenchidos com os dados do JSON
+    //  Array responsável pelo armazenamento das categorias em formato String
     var categoriaArray = [String]()
-    var categoriasFiltradas = [String]()
+    
+    //  Feature para funcionamento da barra de pesquisa
     var searchActive : Bool = false
-    let itemName = "myJSONFromWeb"
-    let defaults = UserDefaults.standard
+    var categoriasFiltradas = [String]()
     
     //  Leitura do JSON a partir da URL
     func lerJson() {
+        
         let url = URL(string: urlCategoriasJson)!
         let jsonData = json.data(using: .utf8, allowLossyConversion: false)!
         
@@ -43,6 +42,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         request.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
         request.httpBody = jsonData
         
+        //  Verificando internet
         if Connectivity.isConnectedToInternet() {
             Alamofire.request(request).responseJSON {
                 (response) in
@@ -52,8 +52,10 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
                 if (try? JSON(data: jsonData)) != nil {
                     for item in categoriesJSON["drinks"].arrayValue {
                         
+                        //  Inserindo os nomes das categorias do JSON no Array de categorias
                         self.categoriaArray.append(item["strCategory"].stringValue)
                         
+                        //  Inserindo as o array de categorias em Caching
                         DataCache.instance.write(object: self.categoriaArray as NSCoding, forKey: "categoriaNome")
                         
                         //  Atualizando a tabela e removendo o loading
@@ -79,7 +81,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         self.showSpinner(onView: self.view)
         searchBarCategorias.delegate = self
         
-        //  Nav Bar
+        //  Configuração da Nav Bar
         navigationController?.navigationBar.barTintColor = UIColor(red: 76/255, green: 156/255, blue: 255/55, alpha: 1)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
@@ -87,7 +89,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         lerJson()
     }
     
-    //  Especificações da tabela
+    //  ESPECIFICAÇÕES DA TABELA
     
     //  Número de linhas da tabela
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -98,6 +100,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
         if Connectivity.isConnectedToInternet() {
             numeroDeLinhas = categoriaArray.count
         } else {
+            
             let arrayCategorias = DataCache.instance.readObject(forKey: "categoriaNome") as! Array<String>
             numeroDeLinhas = arrayCategorias.count
         }
@@ -132,6 +135,7 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     //  Quando uma linha for selecionada
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        //  vcDetail -> Tela de lista de drinks onde irá mostrar os drinks daquela determiada categoria
         if let vcDetail : ItensCategoriaViewController = self.storyboard?.instantiateViewController(withIdentifier: "DetailCategorias") as? ItensCategoriaViewController {
             
             if(searchActive == true){
@@ -149,10 +153,14 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             
             self.show(vcDetail, sender: nil)
+            
+            //  Remove o teclado
+            self.searchBarCategorias.endEditing(true)
+            
         }
     }
     
-    //  Configurações da Search Bar
+    //  CONFIGURAÇÕES DA BARRA DE PESQUISA
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchActive = false
     }
@@ -163,10 +171,12 @@ class CategoriasViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false;
+        self.searchBarCategorias.endEditing(true)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false;
+        self.searchBarCategorias.endEditing(true)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
