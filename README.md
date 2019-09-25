@@ -122,7 +122,7 @@ Alamofire.request(request).responseJSON { (response) in
 ## Realizando Caching dos dados
 O caching irá servir para armazenamento, funcionamento da aplicação offline e para reduzir o número de requisições feitos pelo smartphone
 
-<br/>-> Após a leitura e o armazenamento dos dados em um array utilizaremos o "DataCache" para armazenar o nome da categoria em caching, assim as categorias serão exibidas sem precisar de uma conexão com a internet
+  - Após a leitura e o armazenamento dos dados em um array utilizaremos o "DataCache" para armazenar o nome da categoria em caching, assim as categorias serão exibidas sem precisar de uma conexão com a internet
 
 ```SWIFT
 DataCache.instance.write(object: self.arrayCategorias as NSCoding, forKey: "categoriaNome")
@@ -156,25 +156,25 @@ Para popular a lista da página de detalhes com a instrução, os ingredientes e
 ```SWIFT
 if section == 0 {
             
-            cell.imagemIngrediente.image = UIImage(named: "Intructions")
-            cell.ingrediente.text = DataCache.instance.readObject(forKey: "instrucao") as? String
+  cell.imagemIngrediente.image = UIImage(named: "Intructions")
+  cell.ingrediente.text = DataCache.instance.readObject(forKey: "instrucao") as? String
             
-        } else if section == 1 {
+} else if section == 1 {
             
-            let nomesIngredientes = DataCache.instance.readObject(forKey: "ingredientes") as! [String]
-            cell.ingrediente.text = nomesIngredientes[indexPath.row]
-            let urlImage = nomesIngredientes[indexPath.row].replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
-            cell.imagemIngrediente.sd_setImage(with: URL(string: "https://www.thecocktaildb.com/images/ingredients/\(urlImage).png"), placeholderImage: UIImage(named: "default"))
+  let nomesIngredientes = DataCache.instance.readObject(forKey: "ingredientes") as! [String]
+  cell.ingrediente.text = nomesIngredientes[indexPath.row]
+  let urlImage = nomesIngredientes[indexPath.row].replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
+  cell.imagemIngrediente.sd_setImage(with: URL(string: "https://www.thecocktaildb.com/images/ingredients/\(urlImage).png"), placeholderImage: UIImage(named: "default"))
             
-        } else if section == 2 {
+} else if section == 2 {
             
-            let nomesIngredientes = DataCache.instance.readObject(forKey: "ingredientes") as! [String]
-            let nomesQuantidades = DataCache.instance.readObject(forKey: "quantidades") as! [String]
+  let nomesIngredientes = DataCache.instance.readObject(forKey: "ingredientes") as! [String]
+  let nomesQuantidades = DataCache.instance.readObject(forKey: "quantidades") as! [String]
             
-            cell.ingrediente.text = "\(nomesQuantidades[indexPath.row]) \(nomesIngredientes[indexPath.row])"
-            let urlImage = nomesIngredientes[indexPath.row].replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
-            cell.imagemIngrediente.sd_setImage(with: URL(string: "https://www.thecocktaildb.com/images/ingredients/\(urlImage).png"), placeholderImage: UIImage(named: "default"))
+  cell.ingrediente.text = "\(nomesQuantidades[indexPath.row]) \(nomesIngredientes[indexPath.row])"
+  let urlImage = nomesIngredientes[indexPath.row].replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
+  cell.imagemIngrediente.sd_setImage(with: URL(string: "https://www.thecocktaildb.com/images/ingredients/\(urlImage).png"), placeholderImage: UIImage(named: "default"))
             
-        }
+}
 ```
 Lembrando que a "Section 0" é a seção de instrução, "Section 1" a de ingredientes e "Section 2" a de modo de preparo
