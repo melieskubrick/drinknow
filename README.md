@@ -51,19 +51,19 @@ Aqui estão os pods que foram utilizados para a construção deste app! Estes po
 Aqui estão os arquivos e suas devidas funcionalidades dentro desta aplicação
 
 <b>CategoriasViewController.swift</b>
-<br/>-> Arquivo responsável pela leitura e exibição das categorias de drinks através da API do <b>thecocktaildb<b/>
+<br/><p>-> Arquivo responsável pela leitura e exibição das categorias de drinks através da API do <b>thecocktaildb</b></p>
 
 <b>CategoriasTableViewCell.swift</b>
-<br/>-> Recursos que fazem parte da linha (ROW) da tabela das categorias
+<br/><p>-> Recursos que fazem parte da linha (ROW) da tabela das categorias</p>
 
 <b>ItensCategoriaViewController.swift</b>
-<br/>-> Este arquivo é responsável pela leitura e exibição dos drinks de cada categoria
+<br/><p>-> Este arquivo é responsável pela leitura e exibição dos drinks de cada categoria</p>
 
 <b>ItensCategoriaTableViewCell.swift</b>
-<br/>-> Recursos que fazem parte da linha (ROW) da tabela de drinks das categorias
+<br/><p>-> Recursos que fazem parte da linha (ROW) da tabela de drinks das categorias</p>
 
 <b>ItemDetailViewController.swift</b>
-<br/>-> Página de detalhe do drink, onde exibe a instrução, ingredientes e modo de preparo do drink
+<br/><p>-> Página de detalhe do drink, onde exibe a instrução, ingredientes e modo de preparo do drink</p>
 
 ## Setup inicial -> CategoriasViewController.swift
 
@@ -72,7 +72,9 @@ A url é personalizada para leitura das categorias individualmente
 let urlCategorias = "https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list"
 ```
 
-Para ler os dados do json adicionamos utilizaremos o Alamofire para persistir os dados e requisitá-los para adicionar em um array
+Para ler os dados do json utilizaremos o Alamofire para persistir os dados e requisitá-los e assim adicionar em um array
+
+-> "strCategory" é a chave para chamar o nome da categoria do drink, neste caso irá retornar os nomes de categorias para adicionar no array de categorias
 
 ```SWIFT
 Alamofire.request(request).responseJSON { (response) in
@@ -89,20 +91,12 @@ Alamofire.request(request).responseJSON { (response) in
                         
           //  Atualizando a tabela e removendo o loading
           self.tableView.reloadData()
-          self.removeSpinner()
-                        
+          self.removeSpinner()       
     }
   }
 }
 ```
 
-Após a leitura do json a partir da url os dados ficam armazenados em um "Dictionary", onde podem ser resgatados pela chave de identificação do item no json
-
--> "strCategory" é a chave para chamar o nome do drink, neste caso irá retornar o nome da categoria para exibir na tabela de categorias
-```SWIFT
- item["strCategory"].stringValue
- ```
- 
 <b>Caching dos dados</b>
 <br/>-> Após a leitura e o armazenamentos dos dados em um array utilizaremos o "DataCache" para armazenar o nome da categoria em caching, assim as categorias serão exibidas sem precisar de uma conexão com a internet
 
@@ -116,110 +110,13 @@ Após selecionar uma categoria na tabela da página "CategoriasViewController" i
 ```SWIFT
 let urlDrinks = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=\(NomeDaCategoriaSelecionada)"
 ```
+Utilizaremos o SDWebImage para fazer download em cache da imagem e exibir uma imagem padrão antes da imagem do drink ser carregada e assim iremos popular a tabela de drinks com a imagem e o nome do drink
 
-
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-```sh
-npm install npm@latest -g
+```SWIFT
+var nome = DataCache.instance.readObject(forKey: "nome") as! [String]
+            cell.nomeDrink.text = nome[indexPath.row]
+            
+cell.imagemDrink.sd_setImage(with: URL(string: imagem[indexPath.row]), placeholderImage: UIImage(named: "default"))
 ```
 
-### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-```sh
-git clone https:://github.com/your_username_/Project-Name.git
-```
-3. Install NPM packages
-```sh
-npm install
-```
-4. Enter your API in `config.js`
-```JS
-const API_KEY = 'ENTER YOUR API';
-```
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
-
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Pages](https://pages.github.com)
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Loaders.css](https://connoratherton.com/loaders)
-* [Slick Carousel](https://kenwheeler.github.io/slick)
-* [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-* [Sticky Kit](http://leafo.net/sticky-kit)
-* [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com)
-
-
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=flat-square
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=flat-square
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=flat-square
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
+o `DataCache.instance.readObject(forKey: "nome") as! [String]` está sendo utilizado para recuperar o nome do drink do caching para evitar uma nova requisição e utilização do processador, assim gerando performace
