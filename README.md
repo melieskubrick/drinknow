@@ -97,7 +97,7 @@ Alamofire.request(request).responseJSON { (response) in
 }
 ```
 
-<b>Caching dos dados</b>
+## Caching dos dados
 <br/>-> Após a leitura e o armazenamentos dos dados em um array utilizaremos o "DataCache" para armazenar o nome da categoria em caching, assim as categorias serão exibidas sem precisar de uma conexão com a internet
 
 ```SWIFT
