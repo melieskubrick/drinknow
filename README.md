@@ -33,6 +33,10 @@
    O DRINKNOW é um aplicativo que te ajuda a preparar os melhores drinks! Nele você pode selecionar uma categoria de drink específico, selecionar o drink e ver todo o seu modo de preparo! É bem simples, escolha agora mesmo seu drink e aprecie com moderação.
 </p>
 
+## Pré-Requisitos
+* Swift 5.0
+* iOS 12.2
+
 ## Pods Utilizados
 Aqui estão os pods que foram utilizados para a construção deste app! Estes pods agilizam e melhoram a performace da aplicação
 * [Alamofire](https://github.com/Alamofire/Alamofire)
@@ -65,31 +69,34 @@ end
 ## Conhecendo os Arquivos
 Aqui estão os arquivos e suas devidas funcionalidades dentro desta aplicação
 
-<b>CategoriasViewController.swift</b>
+* <b>CategoriasViewController.swift</b>
 <br/><p>  - Arquivo responsável pela leitura e exibição das categorias de drinks através da API do <b>thecocktaildb</b>. Aqui é feita a conexão com a api e a população da tabela de categoria dos drinks utilizando <b>TableView</b>.</p> 
 
-<b>CategoriasTableViewCell.swift</b>
+* <b>CategoriasTableViewCell.swift</b>
 <br/><p>  - Recursos que fazem parte da linha (ROW) da tabela das categorias</p>
 
-<b>ItensCategoriaViewController.swift</b>
+* <b>ItensCategoriaViewController.swift</b>
 <br/><p>  - Este arquivo é responsável pela leitura e exibição dos drinks de cada categori. Aqui é feita a conexão com a api e a população da tabela de drinks utilizando <b>TableView</b></p>
 
-<b>ItensCategoriaTableViewCell.swift</b>
+* <b>ItensCategoriaTableViewCell.swift</b>
 <br/><p>  - Recursos que fazem parte da linha (ROW) da tabela de drinks das categorias</p>
 
-<b>ItemDetailViewController.swift</b>
+* <b>ItemDetailViewController.swift</b>
 <br/><p>  - Página de detalhe do drink, onde exibe a instrução, ingredientes e modo de preparo do drink</p>
 
 ## Setup inicial -> CategoriasViewController.swift
+A primeira chamada da aplicação é para a Página de listagem de categorias
 
-A url é personalizada para leitura das categorias individualmente
+A url personalizada é utilizada para leitura das categorias individualmente
 ```SWIFT
 let urlCategorias = "https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list"
 ```
 
-Para ler os dados do json utilizaremos o Alamofire para persistir os dados e requisitá-los e assim adicionar esses dados em um array
+Para ler os dados do json utilizaremos o <b>Alamofire</b> para persistir os dados e requisitá-los e assim adicionar esses dados em um array
 
--> "strCategory" é a chave para chamar o nome da categoria do drink, neste caso irá retornar os nomes de categorias para adicionar no array de categorias
+* "strCategory" é a chave para chamar o nome da categoria do drink, neste caso irá retornar os nomes de categorias para adicionar no array de categorias
+
+* `categoriasJSON["drinks"]` é a chave primária do JSON
 
 ```SWIFT
 Alamofire.request(request).responseJSON { (response) in
@@ -112,19 +119,25 @@ Alamofire.request(request).responseJSON { (response) in
 }
 ```
 
-## Caching dos dados
-<br/>-> Após a leitura e o armazenamentos dos dados em um array utilizaremos o "DataCache" para armazenar o nome da categoria em caching, assim as categorias serão exibidas sem precisar de uma conexão com a internet
+## Realizando Caching dos dados
+O caching irá servir para armazenamento, funcionamento da aplicação offline e para reduzir o número de requisições feitos pelo smartphone
+
+<br/>-> Após a leitura e o armazenamento dos dados em um array utilizaremos o "DataCache" para armazenar o nome da categoria em caching, assim as categorias serão exibidas sem precisar de uma conexão com a internet
 
 ```SWIFT
 DataCache.instance.write(object: self.arrayCategorias as NSCoding, forKey: "categoriaNome")
 ```
 
 ## ItensCategoriaViewController.swift
- 
-Após selecionar uma categoria na tabela da página "CategoriasViewController" irá para o setup dos drinks. Utilizando uma url personalizada conseguimos ler todos os drinks de uma categoria específica
+Página de chamada secundária, após a escolha de uma categoria
+
+Após selecionar uma categoria na tabela da página "CategoriasViewController" irá iniciar o setup dos drinks.
+
+Utilizando uma url personalizada conseguimos ler todos os drinks de uma categoria específica
 ```SWIFT
 let urlDrinks = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=\(NomeDaCategoriaSelecionada)"
 ```
+
 Utilizaremos o SDWebImage para fazer download em cache da imagem e exibir uma imagem padrão antes da imagem do drink ser carregada e assim iremos popular a tabela de drinks com a imagem e o nome do drink
 
 ```SWIFT
